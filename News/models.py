@@ -1,10 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 import News.resourses as rs
 
 
 class Author(models.Model):
-    author = models.OneToOneField(AbstractUser, on_delete=models.CASCADE)
+    author = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.IntegerField(default=0)
 
     def update_rating(self):
@@ -56,7 +56,7 @@ class PostCategory(models.Model):
 class Comments(models.Model):
     comment = models.TextField()
     time_creation = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(AbstractUser, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     rating = models.IntegerField(default=0)
 
