@@ -101,7 +101,6 @@ top_p.preview()
 #11. Вывести все комментарии (дата, пользователь, рейтинг, текст) к этой статье.
 com_info = top_p.comments_set.all().values('time_creation', 'author__username', 'rating', 'comment')
 from datetime import datetime
-datetime.strftime(com_info[0]['time_creation'], "%d.%m.%Y")
-com_info[0]['author__username']
-com_info[0]['rating']
-com_info[0]['comment']
+for i in com_info:
+    for j in i.keys():
+        i[j] if j != 'time_creation' else datetime.strftime(com_info[0]['time_creation'], "%d.%m.%Y")
