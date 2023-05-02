@@ -103,4 +103,4 @@ com_info = top_p.comments_set.all().values('time_creation', 'author__username', 
 from datetime import datetime
 for i in com_info:
     for j in i.keys():
-        i[j] if j != 'time_creation' else datetime.strftime(com_info[0]['time_creation'], "%d.%m.%Y")
+        i[j] if j != 'time_creation' else datetime.strftime(i[j], "%d.%m.%Y")
