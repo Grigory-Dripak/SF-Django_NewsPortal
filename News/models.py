@@ -12,7 +12,6 @@ class Author(models.Model):
         #суммарный рейтинг каждой статьи автора умножается на 3
         if Post.objects.filter(author_id=self.pk).exists():
             r1 = Post.objects.filter(author_id=self.pk).values('rating', 'pk')
-            # a1 = self.post_set.all().values('rating')
             rate += sum([r1[i]['rating'] for i in range(len(r1))]) * 3
             #суммарный рейтинг всех комментариев к статьям автора
             post_pk = [r1[i]['pk'] for i in range(len(r1))]
@@ -26,12 +25,13 @@ class Author(models.Model):
         self.rating = rate
         self.save()
 
+
 class Category(models.Model):
     category = models.CharField(max_length=60, unique=True)
 
 
 class Post(models.Model):
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='posts')
     type = models.CharField(max_length=1, choices=rs.TYPES, default=rs.news_type)
     time_creation = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=255)
@@ -59,7 +59,7 @@ class PostCategory(models.Model):
 class Comments(models.Model):
     comment = models.TextField()
     time_creation = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     rating = models.IntegerField(default=0)
 

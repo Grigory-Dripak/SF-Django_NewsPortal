@@ -1,0 +1,107 @@
+from News.models import *
+
+#1. Создать двух пользователей (с помощью метода User.objects.create_user('username'))
+u1 = User.objects.create_user('user1')
+u2 = User.objects.create_user('user2') 
+
+#2.Создать два объекта модели Author, связанные с пользователями.
+a1 = Author.objects.create(author_id=u1.pk) 
+a2 = Author.objects.create(author_id=u2.pk)
+ 
+#3. Добавить 4 категории в модель Category.
+c1 = Category.objects.create(category='sport')
+c2 = Category.objects.create(category='health')
+c3 = Category.objects.create(category='education')
+c4 = Category.objects.create(category='entertainment')
+
+#4.Добавить 2 статьи и 1 новость.
+p1 = Post.objects.create(author_id=a1.pk, title="Russia’s Daria Kasatkina says it ‘makes a lot of sense’ for Ukrainian tennis players to receive support during grass-court season", post="""Daria Kasatkina, Russia’s top-ranked female tennis player, has praised the decision of the Lawn Tennis Association (LTA) and Wimbledon to support Ukrainian tennis players during the grass-court tennis season.
+After Wimbledon announced that Russian and Belarusian players would be able to compete at this year’s tournament, organizers said they would cover the cost of two rooms for all main draw and qualifying players from Ukraine for the entirety of the grass court season. 
+Ukrainian players will also be given the chance to practice at courts in Wimbledon or nearby Surbiton between the end of their French Open campaigns and the start of qualifying week at Wimbledon. 
+ “Most of the players they cannot go back to their practice bases, they can’t go home, so I think it makes a lot of sense to give them the opportunity to practice in London,” Kasatkina told reporters, per the BBC.
+“They cannot go back home, they have to be always on the road and they have to pay all the time for accommodation, so I think it makes a lot of sense.”
+On Sunday, Kasatkina beat Ukraine’s Lesia Tsurenko 6-4 6-2 to reach the fourth round at the Madrid Open, with Tsurenko opting not to shake Kasatkina’s hand at the net after the match.
+A number of Ukrainian players have refused to shake the hands of Russian opponents on the tours since the war began and Kasatkina says she understands their decision.
+“Well, the saddest part is the war still going on,” Kasatkina said. “So of course, players from Ukraine have got a lot of reasons to not shake our hands. 
+ “I accept it and it is how it is. It’s a very sad situation and I understand. I was actually happy that she waved me back. I’m already happy with that.”
+After Russia’s invasion of Ukraine, numerous sports governing bodies around the world issued blanket bans on Russian and Belarusian athletes competing.
+Tennis – Wimbledon last year aside – didn’t follow suit, instead allowing players from Russia and Belarus compete as neutral athletes and Kasatkina said she feels fortunate to still be able to play tennis.
+“I was really sad to miss Wimbledon last year – of course for a reason, but it still was painful,” she said.
+“I’m happy that we will be able to come back this year and to be honest we are the luckiest sport as we are able to compete still.
+Ninety-five percent of the athletes from Russia could not go outside and compete in the international events, and we really appreciate this opportunity and that we can be on the international stage.""")
+
+p2 = Post.objects.create(author_id=a1.pk, type=rs.article_type, title="Adding exercise into treatment may reduce substance use, study shows", post=""" One key to fighting addiction may be exercise, according to a new study.
+Researchers undertook a review of the existing literature around physical activity and its relationship to substance use, and they found that regular exercise was associated with lowered use in about 75% of the studies investigating that question, according to the analysis.
+The review, published Wednesday in the journal PLOS ONE, looked at 43 studies with more than 3,000 total participants. In addition to a reduction or cessation in substance use, the studies also found improved markers of physical health and decreased depressive symptoms, the study said.
+“People think that during treatment people should only do psychotherapeutic treatments … but that’s not what we’ve seen in our study,” said lead study author Florence Piché, a doctoral student and researcher at Université de Montréal in Canada. “It’s very beneficial to do physical activity in addition to the treatments.”
+There are limitations to the findings. The review found that most of the studies the researchers examined had a high risk of bias, meaning more research is needed to confirm their findings, said Dr. Aaron Kandola, research fellow at Medical Research Council Unit for Lifelong Health and Ageing at University College London.""")
+
+
+p3 = Post.objects.create(author_id=a2.pk, type=rs.article_type, title="Why Switzerland built a 2-kilometer-long train", post=""" High in the Swiss Alps, St Moritz made its name as a place for pushing the boundaries of winter sport. By the time it hosted the second Winter Olympics Games in 1928 its reputation as a playground for wealthy adventurers was already well established.
+On Saturday, the region continued its long tradition of expanding the limits of what is possible with an epic world record attempt – not on snow or ice, but on rails.
+To celebrate the 175th anniversary of Switzerland’s first railway, the country’s rail industry came together to run the world’s longest-ever passenger train – 100 cars, 2,990 tonnes and almost two kilometres long.
+Formed of 25 new “Capricorn” electric trains the record-breaking 1,906-meter train took almost an hour to cover around 25 kilometers (about 15 miles) over the spectacular UNESCO World Heritage Albula Line from Preda to Alvaneu in eastern Switzerland.
+Like the legendary Cresta Run toboggan track, the Albula Line is famous for its endless swooping curves and steep descents. A world-renowned masterpiece of civil engineering, the 62-kilometer line between Thusis and St Moritz took just five years to build despite requiring 55 bridges and 39 tunnels.
+Prior to its completion in July 1904, visitors faced a risky 14-hour journey over rough tracks in horse-drawn carriages or sledges.
+Centerpiece of the line is the 5,866-meter-long Albula Tunnel, which runs deep beneath the watershed between the Rhine and Danube rivers.""")
+
+#5.Присвоить им категории (как минимум в одной статье/новости должно быть не меньше 2 категорий).
+p1.category.add(c1)
+p2.category.add(c1)
+p2.category.add(c2)
+p3.category.add(c4)
+p3.category.add(c1)
+
+#6. Создать как минимум 4 комментария к разным объектам модели Post (в каждом объекте должен быть как минимум один комментарий).
+Comments.objects.create(comment="I like tennis...", author_id=u2.pk, post_id=p1.pk)
+
+Comments.objects.create(comment="With good reason, the Swiss are the world’s most enthusiastic rail users.", author_id=u1.pk, post_id=p3.pk)
+
+Comments.objects.create(comment="Your exercise should also be fun", author_id=u1.pk, post_id=p2.pk)
+
+Comments.objects.create(comment="For centuries, the Alps presented a formidable barrier to travelers and trade across this part of Europe but over the last two decades, billions of Swiss Francs have been invested to build the lengthy Gotthard and Loetschberg Base Tunnels deep under the Alps.", author_id=u2.pk, post_id=p3.pk)         
+	
+#7. Применяя функции like() и dislike() к статьям/новостям и комментариям, скорректировать рейтинги этих объектов.
+p1.like()
+p1.like()
+p1.like()
+p2.dislike()
+p3.like()
+p3.like()
+com = Comments.objects.all()
+com[0].like()
+com[1].like()
+com[1].like()
+com[2].dislike()
+com[2].dislike()
+com[3].like()
+com[3].like()
+com[3].like()
+
+#8. Обновить рейтинги пользователей.
+a1.update_rating()
+#2*3 + -1 + 0 = 5
+a2.update_rating()
+#2*3 + 5 + 4 = 15
+
+#9. Вывести username и рейтинг лучшего пользователя (применяя сортировку и возвращая поля первого объекта).
+top_a = Author.objects.all().order_by('-rating').values('author__username', 'rating').first()
+top_a['author__username']
+top_a['rating']
+
+#10. Вывести дату добавления, username автора, рейтинг, заголовок и превью лучшей статьи, основываясь на лайках/дислайках к этой статье.
+top_p = Post.objects.all().order_by('-rating').first()
+top_p.time_creation
+top_p.author.author.username
+top_p.rating
+top_p.title
+top_p.preview()
+
+
+#11. Вывести все комментарии (дата, пользователь, рейтинг, текст) к этой статье.
+com_info = top_p.comments_set.all().values('time_creation', 'author__username', 'rating', 'comment')
+from datetime import datetime
+datetime.strftime(com_info[0]['time_creation'], "%d.%m.%Y")
+com_info[0]['author__username']
+com_info[0]['rating']
+com_info[0]['comment']
