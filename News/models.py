@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import News.resourses as rs
-
+from django.db.models import Sum
 
 class Author(models.Model):
     author = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -9,19 +9,26 @@ class Author(models.Model):
 
     def update_rating(self):
         rate = 0
-        #суммарный рейтинг каждой статьи автора умножается на 3
-        if Post.objects.filter(author_id=self.pk).exists():
-            r1 = Post.objects.filter(author_id=self.pk).values('rating', 'pk')
-            rate += sum([r1[i]['rating'] for i in range(len(r1))]) * 3
-            #суммарный рейтинг всех комментариев к статьям автора
-            post_pk = [r1[i]['pk'] for i in range(len(r1))]
-            for i in post_pk:
-                r3 = Comments.objects.filter(post_id=i).values('rating')
-                rate += sum([r3[i]['rating'] for i in range(len(r3))])
-        #суммарный рейтинг всех комментариев автора
-        if Comments.objects.filter(author_id=self.author).exists():
-            r2 = Comments.objects.filter(author_id=self.author).values('rating')
-            rate += sum([r2[i]['rating'] for i in range(len(r2))])
+        r1 = self.posts.aggregate(postRating=Sum('rating'))
+        rate += r1.get('postRating') * 3
+        r2 = self.author.comments.aggregate(commentRating=Sum('rating'))
+        rate += r2.get('commentRating')
+        for i in self.posts.all():
+            r3 = i.comments_set.aggregate(postcommentRating=Sum('rating'))
+            rate += r3.get('postcommentRating')
+        # #суммарный рейтинг каждой статьи автора умножается на 3
+        # if Post.objects.filter(author_id=self.pk).exists():
+        #     r1 = Post.objects.filter(author_id=self.pk).values('rating', 'pk')
+        #     rate += sum([r1[i]['rating'] for i in range(len(r1))]) * 3
+        #     #суммарный рейтинг всех комментариев к статьям автора
+        #     post_pk = [r1[i]['pk'] for i in range(len(r1))]
+        #     for i in post_pk:
+        #         r3 = Comments.objects.filter(post_id=i).values('rating')
+        #         rate += sum([r3[i]['rating'] for i in range(len(r3))])
+        # #суммарный рейтинг всех комментариев автора
+        # if Comments.objects.filter(author_id=self.author).exists():
+        #     r2 = Comments.objects.filter(author_id=self.author).values('rating')
+        #     rate += sum([r2[i]['rating'] for i in range(len(r2))])
         self.rating = rate
         self.save()
 
