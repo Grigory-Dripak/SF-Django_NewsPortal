@@ -4,11 +4,6 @@ from .models import Post
 class PostsList(ListView):
     # Указываем модель, объекты которой мы будем выводить
     model = Post
-    # # Filter
-    # queryset = Post.objects.filter(
-    #     price__lte=300
-    # ).order_by('name')
-
     # Поле, которое будет использоваться для сортировки объектов
     ordering = 'time_creation'
     # Указываем имя шаблона, в котором будут все инструкции о том,
