@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 import News.resourses as rs
 from django.db.models import Sum
 
+
 class Author(models.Model):
     author = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.IntegerField(default=0)
@@ -56,6 +57,9 @@ class Post(models.Model):
     def dislike(self):
         self.rating -= 1
         self.save()
+
+    def __str__(self):
+        return f'{self.title}: {self.author}'
 
 
 class PostCategory(models.Model):
