@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.flatpages.admin import FlatPageAdmin
 from django.contrib.flatpages.models import FlatPage
 from django.utils.translation import gettext_lazy as _
-from .models import Post, Category
+from .models import Post, Category, PostCategory, Comments
 
 
 # Define a new FlatPageAdmin
@@ -27,3 +27,5 @@ admin.site.register(FlatPage, FlatPageAdmin)
 # Register your models here.
 admin.site.register(Post)
 admin.site.register(Category)
+admin.site.register(PostCategory)
+admin.site.register(Comments)
