@@ -1,8 +1,7 @@
 {% extends 'flatpages/default.html' %}
 
 {% block content %}
-<h1>Post</h1>
-<hr>
+<h1>{{ type }}</h1>
 <form action="" method="post">
     {% csrf_token %}
     {{ form.as_p }}

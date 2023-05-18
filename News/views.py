@@ -7,27 +7,11 @@ from .filters import PostFilter
 # from django.http import HttpResponseRedirect
 
 class PostsList(ListView):
-    # Указываем модель, объекты которой мы будем выводить
     model = Post
-    # Поле, которое будет использоваться для сортировки объектов
     ordering = '-time_creation'
-    # Указываем имя шаблона, в котором будут все инструкции о том,
-    # как именно пользователю должны быть показаны наши объекты
     template_name = 'posts.html'
-    # Это имя списка, в котором будут лежать все объекты.
-    # Его надо указать, чтобы обратиться к списку объектов в html-шаблоне.
     context_object_name = 'posts'
-    paginate_by = 4
-
-    # def get_queryset(self):
-    #     queryset = super().get_queryset()
-    #     self.filterset = PostFilter(self.request.GET, queryset)
-    #     return self.filterset.qs
-    #
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['filterset'] = self.filterset
-    #     return context
+    paginate_by = 5
 
 
 class PostsSearch(ListView):
@@ -35,9 +19,8 @@ class PostsSearch(ListView):
     ordering = '-time_creation'
     template_name = 'search.html'
     context_object_name = 'posts_search'
-    paginate_by = 4
+    paginate_by = 5
 
-    # Переопределяем функцию получения списка товаров
     def get_queryset(self):
         queryset = super().get_queryset()
         self.filterset = PostFilter(self.request.GET, queryset)
@@ -60,12 +43,33 @@ class NewsCreate(CreateView):
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
+    context_object_name = 'post'
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.type = 'N'
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type']='News'
+        return context
 
 
 class ArticleCreate(CreateView):
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.type = 'A'
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type']='Article'
+        return context
 
 
 class NewsUpdate(UpdateView):
@@ -83,10 +87,10 @@ class ArticleUpdate(UpdateView):
 class NewsDelete(DeleteView):
     model = Post
     template_name = 'post_delete.html'
-    success_url = reverse_lazy('posts')
+    success_url = reverse_lazy('post_list')
 
 
 class ArticleDelete(DeleteView):
     model = Post
     template_name = 'post_delete.html'
-    success_url = reverse_lazy('posts')
+    success_url = reverse_lazy('post_list')

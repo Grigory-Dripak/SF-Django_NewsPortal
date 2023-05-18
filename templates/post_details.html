@@ -1,6 +1,7 @@
 <!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
 {% extends 'flatpages/default.html' %}
 {% load custom_filters %}
+{% load mytags %}
 <!-- Название у нас будет Product -->
 {% block title %}
 Post details
@@ -13,4 +14,37 @@ Post details
 <h4 align="left"><em>{{ post_details.time_creation|date:'d.m.Y' }}</em></h4>
 <hr>
 <p>{{ post_details.post|censor }}</p>
+{% if post_details.type == 'A' %}
+    <table>
+        <tr>
+            <td>
+                <form action="articles/{{ post_details.pk }}/edit/" >
+                    <input type="submit" value="Edit" />
+                </form>
+            </td>
+            <td>
+                <form action="articles/{{ post_details.pk }}/delete/" >
+                    <input type="submit" value="Delete" />
+                </form>
+            </td>
+        </tr>
+    </table>
+
+{% else %}
+    <table>
+        <tr>
+            <td>
+                <form action="{{ post_details.pk }}/edit/" >
+                    <input type="submit" value="Edit" />
+                </form>
+            </td>
+            <td>
+                <form action="{{ post_details.pk }}/delete/" >
+                    <input type="submit" value="Delete" />
+                </form>
+            </td>
+        </tr>
+    </table>
+{% endif %}
+
 {% endblock content %}

@@ -11,7 +11,13 @@ Posts: news & articles
 <h1>{{posts|length}} POSTS:</h1>
     <table>
         {% for post in posts %}
-
+        <tr>
+            <td colspan="2" align="left"> <em>
+            {% for cat in post.category.all %}
+                {{cat}}
+            {% endfor %}:
+            </em></td>
+        </tr>
         <tr>
             <td align="left"> <strong> {{ post.time_creation|date:'d.m.Y' }} </strong></td>
             <td align="left"><a href={% hrefcreate value=post.pk %}> {{ post.title|censor }} </a></td>
