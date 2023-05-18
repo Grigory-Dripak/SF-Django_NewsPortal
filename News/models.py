@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
+
 import News.resourses as rs
 from django.db.models import Sum
 
@@ -33,9 +35,14 @@ class Author(models.Model):
         self.rating = rate
         self.save()
 
+    def __str__(self):
+        return f'{self.author}'
 
 class Category(models.Model):
     category = models.CharField(max_length=60, unique=True)
+
+    def __str__(self):
+        return f'{self.category}'
 
 
 class Post(models.Model):
@@ -46,6 +53,9 @@ class Post(models.Model):
     post = models.TextField()
     rating = models.IntegerField(default=0)
     category = models.ManyToManyField(Category, through='PostCategory')
+
+    def get_absolute_url(self):
+        return reverse('post_detail', args=[str(self.id)])
 
     def preview(self):
         return f"{self.post[:124:]}..."
