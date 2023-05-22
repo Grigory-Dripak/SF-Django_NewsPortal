@@ -18,14 +18,18 @@ Post details
     <table>
         <tr>
             <td>
+                {% if perms.News.change_post %}
                 <form action="articles/{{ post_details.pk }}/edit/" >
                     <input type="submit" value="Edit" />
                 </form>
+                {% endif %}
             </td>
             <td>
+                {% if perms.News.delete_post %}
                 <form action="articles/{{ post_details.pk }}/delete/" >
                     <input type="submit" value="Delete" />
                 </form>
+                {% endif %}
             </td>
         </tr>
     </table>
@@ -34,14 +38,18 @@ Post details
     <table>
         <tr>
             <td>
+                {% if perms.News.change_post %}
                 <form action="{{ post_details.pk }}/edit/" >
                     <input type="submit" value="Edit" />
                 </form>
+                {% endif %}
             </td>
             <td>
+                {% if perms.News.delete_post %}
                 <form action="{{ post_details.pk }}/delete/" >
                     <input type="submit" value="Delete" />
                 </form>
+                {% endif %}
             </td>
         </tr>
     </table>

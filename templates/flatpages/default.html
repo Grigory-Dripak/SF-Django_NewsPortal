@@ -26,10 +26,18 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="/news/create/">News posting</a></li>
-                                <li><a class="dropdown-item" href="/news/articles/create/">Article posting</a></li>
-                                <li><hr class="dropdown-divider" /></li>
                                 <li><a class="dropdown-item" href="/news/search/">Search Post</a></li>
+                                <li><hr class="dropdown-divider" /></li>
+                                {% if perms.News.add_post %}
+                                    <li><a class="dropdown-item" href="{% url 'news_create' %}">News posting</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'articles_create' %}">Article posting</a></li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li><a class="dropdown-item" href="/accounts/logout/">Logout</a></li>
+                                {% else %}
+                                    <li><a class="dropdown-item" href="/accounts/login/">Login</a></li>
+                                {% endif %}
+<!--                                <li><a class="dropdown-item" href="/news/create/">News posting</a></li>-->
+<!--                                <li><a class="dropdown-item" href="/news/articles/create/">Article posting</a></li>-->
                             </ul>
                         </li>
                     </ul>
