@@ -53,5 +53,23 @@ Posts: news & articles
            <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
        {% endif %}
    {% endif %}
+<hr>
+{# Теперь будем проверять не request.user.is_authenticated, а конкретные права #}
+{% if perms.News.add_post %}
+<table>
+    <tr>
+        <td>
+            <form action="{% url 'news_create' %}" >
+                <input type="submit" value="News posting" />
+            </form>
+        </td>
+        <td>
+            <form action="{% url 'articles_create' %}" >
+                <input type="submit" value="Articles posting" />
+            </form>
+        </td>
+    </tr>
+</table>
+{% endif %}
 
 {% endblock content %}>
