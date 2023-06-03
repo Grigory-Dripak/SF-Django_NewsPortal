@@ -38,6 +38,7 @@ class Author(models.Model):
     def __str__(self):
         return f'{self.author}'
 
+
 class Category(models.Model):
     category = models.CharField(max_length=60, unique=True)
 
@@ -91,3 +92,16 @@ class Comments(models.Model):
     def dislike(self):
         self.rating -= 1
         self.save()
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.CASCADE,
+        related_name='subscriptions',
+    )
+    category = models.ForeignKey(
+        to='Category',
+        on_delete=models.CASCADE,
+        related_name='subscriptions',
+    )

@@ -11,9 +11,20 @@ Post details
 {% block content %}
 <h1><strong>{{ post_details.title|censor }}</strong></h1>
 <br>
-<h4 align="left"><em>{{ post_details.time_creation|date:'d.m.Y' }}</em></h4>
+<h4 align="left"><em>{{ post_details.time_creation|date:'d.m.Y' }} - by {{ post_details.author }}</em></h4>
 <hr>
 <p>{{ post_details.post|censor }}</p>
+<hr>
+
+<table>
+{% for cmnts in post_details.comments_set.all %}
+    <tr>
+        <td>{{cmnts.author}} comment:</td>
+        <td align="left">{{cmnts.comment}}</td>
+    </tr>
+{% endfor %}
+</table>
+
 {% if post_details.type == 'A' %}
     <table>
         <tr>
