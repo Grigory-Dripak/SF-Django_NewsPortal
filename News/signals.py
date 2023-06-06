@@ -16,8 +16,6 @@ def post_created(instance, **kwargs):
     for cat_pk in categories.values_list('pk', flat=True):
         mails_list += User.objects.filter(subscriptions__category=cat_pk).values_list('email', flat=True)
 
-    print(mails_list)
-
     subject = f'New post in {" and ".join(categories.values_list("category", flat=True))} is published'
 
     text_content = (

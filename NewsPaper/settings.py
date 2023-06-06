@@ -163,8 +163,8 @@ ACCOUNT_FORMS = {"signup": "News.forms.CustomSignupForm"}
 load_dotenv(find_dotenv())
 
 # Emails
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = getenv('EMAIL_HOST_USER')
@@ -175,8 +175,8 @@ EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = getenv('DEFAULT_FROM_EMAIL')
 
 SERVER_EMAIL = getenv('SERVER_EMAIL')
-# MANAGERS = (
-#     ('user', 'user@mail.ru'),
-# )
+MANAGERS = (
+    ('user', 'user@mail.ru'),
+)
 
 EMAIL_SUBJECT_PREFIX = ['MyNewsPortal']
