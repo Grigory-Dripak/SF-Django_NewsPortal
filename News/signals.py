@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User
-from django.core.mail import EmailMultiAlternatives
+# from django.core.mail import EmailMultiAlternatives
 from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
-
+from .tasks import send_notifications
 from .models import PostCategory
 
 
@@ -31,7 +31,15 @@ def post_created(instance, **kwargs):
          f'{instance.title}</a>'
          f'<p>post preview:{instance.preview()}</p>'
      )
-    for email in set(mails_list):
-         msg = EmailMultiAlternatives(subject, text_content, None, [email])
-         msg.attach_alternative(html_content, "text/html")
-         msg.send()
+
+    send_notifications.delay(
+        subject=subject,
+        text_content=text_content,
+        html_content=html_content,
+        mails_list=mails_list
+    )
+
+    # for email in set(mails_list):
+    #      msg = EmailMultiAlternatives(subject, text_content, None, [email])
+    #      msg.attach_alternative(html_content, "text/html")
+    #      msg.send()
