@@ -2,12 +2,13 @@
 {% extends 'flatpages/default.html' %}
 {% load custom_filters %}
 {% load mytags %}
-<!-- Название у нас будет Product -->
+
+
 {% block title %}
 Post details
 {% endblock title %}
 
-<!-- В контенте на странице мы выводим сам товар, идентификатор которого был передан в url -->
+
 {% block content %}
 <h1><strong>{{ post_details.title|censor }}</strong></h1>
 <br>

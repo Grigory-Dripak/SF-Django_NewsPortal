@@ -6,6 +6,7 @@
 Posts: news & articles
 {% endblock title %}
 
+
 {% block content %}
 {% if posts %}
 <h1>{{posts|length}} POSTS:</h1>
@@ -15,7 +16,7 @@ Posts: news & articles
             <td colspan="2" align="left"> <em>
             {% for cat in post.category.all %}
                 {{cat}}
-            {% endfor %}:
+            {% endfor %}
             </em></td>
         </tr>
         <tr>
