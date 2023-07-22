@@ -40,22 +40,18 @@ class PostsSearch(ListView):
 
 class PostDetail(LoginRequiredMixin, DetailView):
     raise_exception = True
-    model = Post
-    #queryset = Post.objects.all()
+    #model = Post
+    queryset = Post.objects.all()
     template_name = 'post_details.html'
     context_object_name = 'post_details'
     #pk_url_kwarg = 'id'
 
-"""    def get_object(self, *args, **kwargs):  # переопределяем метод получения объекта, как ни странно
+    def get_object(self, *args, **kwargs):  # переопределяем метод получения объекта, как ни странно
         obj = cache.get(f'post-{self.kwargs["pk"]}', None)
-        # кэш очень похож на словарь, и метод get действует так же.
-        # Он забирает значение по ключу, если его нет, то забирает None.
-        # если объекта нет в кэше, то получаем его и записываем в кэш
         if not obj:
             obj = super().get_object(queryset=self.queryset)
             cache.set(f'post-{self.kwargs["pk"]}', obj)
-            return obj
-"""
+        return obj
 
 
 class NewsCreate(PermissionRequiredMixin, CreateView):

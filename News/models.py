@@ -73,10 +73,10 @@ class Post(models.Model):
     def __str__(self):
         return f'{self.title}: {self.author}'
 
-"""   def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         cache.delete(f'post-{self.pk}')
-"""
+
 
 class PostCategory(models.Model):
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
