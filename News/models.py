@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.core.cache import cache
 
 import News.resourses as rs
 from django.db.models import Sum
@@ -56,7 +57,7 @@ class Post(models.Model):
     category = models.ManyToManyField(Category, through='PostCategory')
 
     def get_absolute_url(self):
-        return reverse('post_detail', args=[str(self.id)])
+        return reverse('post_detail', args=[str(self.pk)])
 
     def preview(self):
         return f"{self.post[:124:]}..."
@@ -71,6 +72,10 @@ class Post(models.Model):
 
     def __str__(self):
         return f'{self.title}: {self.author}'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        cache.delete(f'post-{self.pk}')
 
 
 class PostCategory(models.Model):

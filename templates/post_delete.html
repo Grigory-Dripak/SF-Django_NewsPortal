@@ -1,6 +1,8 @@
 {% extends 'flatpages/default.html' %}
 
 {% block content %}
+{% load cache %} <!-- Загружаем кэширование -->
+    {% cache 30 post_delete %}
 <h1>Post delete</h1>
 <hr>
 <form action="" method="post">
@@ -8,4 +10,5 @@
     <p>Delete "{{ object.title }} ({{ object.author }})"?</p>
     <input type="submit" value="Delete" />
 </form>
+    {% endcache %}
 {% endblock content %}

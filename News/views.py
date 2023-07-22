@@ -8,6 +8,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .models import Post, Category, Subscription
 from .forms import PostForm
 from .filters import PostFilter
+from django.core.cache import cache
 # from django.http import HttpResponseRedirect
 
 
@@ -39,10 +40,18 @@ class PostsSearch(ListView):
 
 class PostDetail(LoginRequiredMixin, DetailView):
     raise_exception = True
-    model = Post
+    #model = Post
+    queryset = Post.objects.all()
     template_name = 'post_details.html'
     context_object_name = 'post_details'
-    pk_url_kwarg = 'id'
+    #pk_url_kwarg = 'id'
+
+    def get_object(self, *args, **kwargs):  # переопределяем метод получения объекта, как ни странно
+        obj = cache.get(f'post-{self.kwargs["pk"]}', None)
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'post-{self.kwargs["pk"]}', obj)
+        return obj
 
 
 class NewsCreate(PermissionRequiredMixin, CreateView):
